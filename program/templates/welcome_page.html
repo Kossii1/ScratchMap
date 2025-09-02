@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+    <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+    <title>Мои путешествия по миру</title>
+</head>
+<body>
+    <div class="container">
+        <h1>МОИ ПУТЕШЕСТВИЯ ПО МИРУ</h1>
+        <div class="main-content">
+            <img src="{% static 'img/main.gif' %}" class="image-section"/>
+            <div class="auth-panel">
+                <div class="toggle-auth">
+                    <label>
+                        <input type="radio" id="signIn" name="authType" checked onclick="select_auth();">
+                        Вход
+                    </label>
+                    <label>
+                        <input type="radio" id="reg" name="authType" onclick="select_reg();">
+                        Регистрация
+                    </label>
+                </div>
+                <!-- Форма -->
+                <form id="authForm" method="POST" action="/sign-in/">
+                    {% csrf_token %}
+                    <!-- Никнейм -->
+                    <div class="form">
+                        <div id="tdName">
+                            <input type="text" id="name" name="name" class="text-field_input" placeholder="Ваш никнейм" maxlength="100">
+                        </div>
+                        <!-- Логин -->
+                        <input type="text" id="login" name="login" class="text-field_input" placeholder="Логин" maxlength="100">
+                        <!-- Пароль -->
+                        <input type="password" id="password" name="password" class="text-field_input" placeholder="Пароль" maxlength="100">
+                        <!-- Выбор -->
+                        <input type="hidden" name="select" value="1">
+                    </div>
+                    <!-- Кнопка -->
+                    <div>
+                        <button type="button" class="open_map_button" onclick="go_map()">
+                            Перейти на карту
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

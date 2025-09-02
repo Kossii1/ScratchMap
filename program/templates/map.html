@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+    <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=97020090-5215-4022-8614-fbc7202fe017&lang=ru_RU"></script>
+    <title>Мои путешествия по миру</title>
+</head>
+<body>
+    <div class="layout">
+        <!-- Панель управления -->
+        <aside class="panel-control">
+            <div class="panel-header">
+                <button class="text3" onclick="showProfile()">Профиль</button>
+            </div>
+
+            <hr>
+
+            <!-- Инфо о стране -->
+            <section class="country-info">
+                <h2 id="nameSelectCountry" class="text1"></h2>
+                <p id="dataCountry" class="text2"></p>
+
+                <div id="tdPhotosCountry" class="center hidden">
+                    <button class="button button2" onclick="goPhotosCountry()">Фото страны</button>
+                </div>
+
+                <div id="tdAttendance" class="center hidden">
+                    <button class="button button4" onclick="addEditAttendance()">Посещаемость</button>
+                </div>
+            </section>
+
+            <hr>
+
+            <div class="center">
+                <button class="button button5" onclick="showProgress()">Прогресс посещения стран</button>
+            </div>
+
+            <div class="center">
+                <button class="button button5" onclick="exportMap()">Экспорт карты</button>
+            </div>
+
+            <hr>
+
+            <!-- Список стран -->
+            <div id="divCountries" class="countries-list"></div>
+
+            <!-- Поиск страны -->
+            <div class="country-search">
+                <input id="findCountryInput" class="text-field_input--search_country"
+                    type="text" placeholder="Название страны"
+                    autocomplete="off" maxlength="100">
+                <button class="button" onclick="findCountry()">Поиск</button>
+            </div>
+        </aside>
+
+        <!-- Карта -->
+        <main class="map-container">
+            <div id="map"></div>
+        </main>
+    </div>
+
+    <!-- модальное окно профиля -->
+    <div id="modal_profile" class="modal_profile">
+        <div class="modal_header">
+            <h2 id="text1">Профиль</h2>
+            <button class="close_button" title="Закрыть" onclick="closeModal();">
+                <img src="{% static 'img/close.gif' %}" alt="Закрыть">
+            </button>
+        </div>
+
+        <hr class="divider">
+
+        <form class="modal_form" onsubmit="saveProfile(); return false;">
+            <div class="form_group">
+                <label class="text-field_label" for="nameProfile">Никнейм</label>
+                <input class="text-field_input" type="text" id="nameProfile" maxlength="100">
+            </div>
+
+            <div class="form_group">
+                <label class="text-field_label" for="loginProfile">Логин</label>
+                <input class="text-field_input" type="text" id="loginProfile" maxlength="100">
+            </div>
+
+            <div class="form_group">
+                <label class="text-field_label" for="passwordProfile">Новый пароль</label>
+                <input class="text-field_input" type="password" id="passwordProfile" maxlength="100">
+            </div>
+
+            <div class="form_actions">
+                <button type="submit" class="button3 center">Сохранить</button>
+            </div>
+        </form>
+
+        <div class="form_actions">
+            <button class="button2 button" onclick="exitProfile();">Выход из аккаунта</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var ListMyCountries = {{ ListMyCountries|safe }};
+        var ListCountries = {{ ListCountries|safe }};
+        var CsrfToken = '{{ csrf_token }}';
+    </script>
+
+    <script src="{% static 'js/map.js' %}"></script>
+</body>
+</html>

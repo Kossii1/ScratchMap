@@ -1,0 +1,331 @@
+body {
+    background-color: #ffffff;
+}
+
+.container {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.image-section{
+    max-width: 100%;
+    height: auto;
+}
+
+.auth-panel {
+    background-color: #dddddd;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.toggle-auth {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.text-field_input {
+  display: block;
+  height: calc(2.25rem + 2px);
+  font-family: inherit;
+  font-size: 24px;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid #bdbdbd;
+  border-radius: 0.25rem;
+}
+
+.text-field_input::placeholder {
+  color: #212529;
+  opacity: 0.4;
+}
+
+.open_map_button {
+    background-color: #58b92c;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    height: 50px;
+    font-size: 24px;
+    font-family: Arial;
+}
+
+.open_map_button:hover{
+    background-color: #9ed14a;
+}
+
+/*стиль текста информационного сообщения*/
+.message{
+    font-size: 28px;
+    color: #6b6a72;
+    text-align: justify;
+    font-family: Times New Roman;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.text1{
+    font-size: 21px;
+    color: black; /*черный цвет*/
+    font-weight: bold;
+    font-family: Times New Roman;
+    text-align: left;
+}
+
+.text2{
+    font-size: 18px;
+    color: black;
+    text-align: left;
+    font-family: Times New Roman;
+    white-space: pre-line;
+}
+
+.text3{
+    font-size: 21px;
+    color: #040ff8;
+    font-weight: bold;
+    font-family: Times New Roman;
+    text-align: left;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.text5{
+    font-size: 18px;
+    color: black;
+    font-family: Times New Roman;
+    text-align: left;
+    cursor: pointer;
+}
+.text5:hover{
+    opacity: 50%;
+}
+
+.text6{
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    font-family: Times New Roman;
+    text-align: left;
+    cursor: pointer;
+}
+.text6:hover{
+    opacity: 50%;
+}
+
+/*стиль кнопки маленькая, оранжевая*/
+.button5{
+    background-color: #f7b731;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    height: 30px;
+    font-size: 18px;
+    font-family: Arial;
+}
+.button5:hover{
+    background-color: #eea307;
+}
+
+
+/* Панель */
+.panel-control {
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.panel-header {
+  text-align: right;
+}
+
+/* Блоки страны */
+.country-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.country-data {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+/* Список стран */
+.countries-list {
+  overflow-y: auto;
+  height: 400px;
+  border: 1px solid #eee;
+  padding: 5px;
+}
+
+/* Поиск */
+.country-search {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+/* Кнопки */
+.button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button2 {
+    background-color: #04e724;
+    color: #fff;
+    height: 30px;
+    font-size: 18px;
+    font-family: Arial;
+    margin-bottom: 15px;
+}
+
+.button2:hover{
+    background-color: #0d7b1c;
+}
+
+.button4 {
+    background-color: #0734f7;
+    color: #fff;
+    height: 30px;
+    font-size: 18px;
+    font-family: Arial;
+}
+
+.button4:hover{
+    background-color: #09269f;
+}
+
+.center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 22% 1fr;
+  height: 100%;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid #ddd;
+  margin: 0.1px 0;
+}
+
+.text-field_input--search_country {
+  flex: 1;
+  padding: 5px;
+  font-size: 14px;
+}
+
+/* модальное окно профиля */
+.modal_profile {
+    height: 390px;
+    width: 300px;
+    background: white;
+    top: 10%;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    z-index:100;
+    display: none;
+    position: fixed;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #d8d8d8;
+}
+
+.close_button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.close_button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* стили для label */
+.text-field_label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 24px;
+    font-family: Times New Roman;
+}
+
+.text-field_input:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #339afe;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25);
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal_form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form_actions {
+    text-align: center;
+    margin-top: 5px;
+}
