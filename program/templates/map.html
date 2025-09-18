@@ -4,42 +4,55 @@
     <meta charset="UTF-8">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+    <!-- Подключение jQuery -->
     <script src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+    <!-- Chart.js для построения диаграмм -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <!-- html2canvas для экспорта карты в изображение -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+    <!-- API Яндекс.Карт -->
     <script src="https://api-maps.yandex.ru/2.1/?apikey=97020090-5215-4022-8614-fbc7202fe017&lang=ru_RU"></script>
     <title>Мои путешествия по миру</title>
 </head>
 <body>
+
+    <!-- Основной контейнер: панель управления + карта -->
     <div class="layout">
+
         <!-- Панель управления -->
         <aside class="panel-control">
+            <!-- Шапка панели с кнопкой профиля -->
             <div class="panel-header">
-                <button class="text3" onclick="showProfile()">Профиль</button>
+                <button class="profile-button" onclick="showProfile()">Профиль</button>
             </div>
 
             <hr>
 
-            <!-- Инфо о стране -->
+            <!-- Информация о выбранной стране -->
             <section class="country-info">
                 <h2 id="nameSelectCountry" class="text1"></h2>
-                <p id="dataCountry" class="text2"></p>
+                <p id="dataCountry" class="info-country"></p>
 
-                <div id="tdPhotosCountry" class="center hidden">
-                    <button class="button button2" onclick="goPhotosCountry()">Фото страны</button>
+                <!-- Кнопка для просмотра подробной информации о стране, скрыта по умолчанию -->
+                <div id="WikiCountry" class="hidden-text">
+                    <button class="button button1" onclick="goWikiCountry()">Подробнее (Wikipedia)</button>
                 </div>
 
-                <div id="tdAttendance" class="center hidden">
-                    <button class="button button4" onclick="addEditAttendance()">Посещаемость</button>
+                <!-- Кнопка для управления посещением страны, скрыта по умолчанию -->
+                <div id="tdAttendance" class="hidden-text">
+                    <button class="button add-visit-button" onclick="addEditAttendance()">Посещаемость</button>
                 </div>
             </section>
 
             <hr>
 
-            <div class="center">
-                <button class="button button5" onclick="showProgress()">Прогресс посещения стран</button>
+            <!-- Кнопки прогресса и экспорта карты -->
+            <div style="text-align: center;">
+                <button class="button button2" onclick="showProgress()">Прогресс посещения стран</button>
             </div>
 
-            <div class="center">
-                <button class="button button5" onclick="exportMap()">Экспорт карты</button>
+            <div style="text-align: center;">
+                <button class="button button2" onclick="exportMap()">Экспорт карты</button>
             </div>
 
             <hr>
@@ -64,16 +77,19 @@
 
     <!-- модальное окно профиля -->
     <div id="modal_profile" class="modal_profile">
+
         <div class="modal_header">
             <h2 id="text1">Профиль</h2>
             <button class="close_button" title="Закрыть" onclick="closeModal();">
-                <img src="{% static 'img/close.gif' %}" alt="Закрыть">
+                <img src="{% static 'img/close.gif' %}" alt="Закрыть" style="width:20px; height:20px;">
             </button>
         </div>
 
-        <hr class="divider">
+        <hr>
 
+        <!-- Форма редактирования профиля -->
         <form class="modal_form" onsubmit="saveProfile(); return false;">
+
             <div class="form_group">
                 <label class="text-field_label" for="nameProfile">Никнейм</label>
                 <input class="text-field_input" type="text" id="nameProfile" maxlength="100">
@@ -86,19 +102,141 @@
 
             <div class="form_group">
                 <label class="text-field_label" for="passwordProfile">Новый пароль</label>
-                <input class="text-field_input" type="password" id="passwordProfile" maxlength="100">
+                <input class="text-field_input" type="text" id="passwordProfile" maxlength="100">
             </div>
 
             <div class="form_actions">
-                <button type="submit" class="button3 center">Сохранить</button>
+                <button type="submit" class="button3">Сохранить</button>
             </div>
         </form>
 
+        <!-- Кнопка выхода из аккаунта -->
         <div class="form_actions">
             <button class="button2 button" onclick="exitProfile();">Выход из аккаунта</button>
         </div>
     </div>
 
+    <!-- модальное окно посещения -->
+    <div id="modal_attendance" class="modal_attendance">
+
+        <header class="modal_header">
+            <h2 class="text1" id="title_attendance">Посещение</h2>
+            <button class="close_button" title="Закрыть" onclick="closeModal();">
+                <img src="{% static 'img/close.gif' %}" alt="Закрыть" style="width:30px; height:30px;"/>
+            </button>
+        </header>
+
+        <hr>
+
+        <!-- Выбор цвета для выделения страны -->
+        <section class="modal_section">
+            <label class="text-field_label" for="colorCountry">Цвет выделения страны</label>
+            <input type="color" id="colorCountry" />
+        </section>
+
+        <!-- Впечатления о стране -->
+        <section class="modal_section">
+            <label class="text-field_label" for="descriptionCountry">Впечатления от страны</label>
+            <textarea class="text-field_text_area" id="descriptionCountry" rows="2" maxlength="5000"></textarea>
+        </section>
+
+        <!-- Кнопка сохранения изменений -->
+        <footer class="modal_footer">
+            <button class="button button2" onclick="saveColDesCountry();">Сохранить</button>
+        </footer>
+
+        <hr>
+
+        <!-- Секция для отображения пользовательских фото из страны -->
+        <section class="modal_section">
+            <div class="photos_header">
+                <span class="text1">Фото</span>
+                <!-- Кнопка добавления фото -->
+                <button title="Добавить фото" class="button button1" onclick="showAddEditPhoto(0);">Добавить</button>
+            </div>
+            <div id="divPhotosCountry" class="photos_container"></div>
+        </section>
+    </div>
+
+    <!-- модальное окно добавления и изменения фото -->
+    <div id="modal_add_edit_photo" class="modal_add_edit_photo">
+
+        <!-- кнопка выбора файла -->
+        <input type="file" id="file_input"
+               accept="image/*"
+               onchange="downloadFile(this.files)" hidden>
+
+        <header class="modal_header">
+            <h2 class="text1" id="title_add_edit_photo">Фото</h2>
+            <button class="close_button" title="Закрыть" onclick="closeSubModal();">
+                <img src="{% static 'img/close.gif' %}" alt="Закрыть" style="width:30px; height:30px;"/>
+            </button>
+        </header>
+
+        <hr>
+
+        <!-- превью фото -->
+        <section class="modal_section modal_photo">
+            <img src="" id="photo"/>
+        </section>
+
+        <!-- кнопка добавления -->
+        <section class="modal_section">
+            <button class="button button1" onclick="addPhoto();">Добавить фото</button>
+        </section>
+
+        <!-- Заголовок, дата и описание фото -->
+        <section class="modal_section">
+            <label class="text-field_label" for="titlePhotoAD">Заголовок</label>
+            <input class="text-field_input" type="text" id="titlePhotoAD" maxlength="300">
+        </section>
+
+        <section class="modal_section">
+            <label class="text-field_label" for="datePhotoAD">Дата</label>
+            <input class="text-field_input" type="date" id="datePhotoAD">
+        </section>
+
+        <section class="modal_section">
+            <label class="text-field_label" for="descriptionPhotoAD">Впечатления от страны</label>
+            <textarea class="text-field_text_area" id="descriptionPhotoAD"
+                      rows="5" maxlength="5000"></textarea>
+        </section>
+
+        <!-- Кнопка сохранения изменений -->
+        <footer class="modal_footer">
+            <button class="button button2" onclick="savePhoto();">Сохранить</button>
+        </footer>
+    </div>
+
+    <!-- модальное окно диаграммы прогресса посещения мира -->
+    <div id="modal_progress_diagram" class="modal_progress_diagram">
+
+        <div class="modal_header">
+            <h2 class="text1" id="title_progress_diagram">Прогресс посещения стран</h2>
+            <button class="close_button" title="Закрыть" onclick="closeModal();">
+                <img src="{% static 'img/close.gif' %}" alt="Закрыть" style="width:30px; height:30px;"/>
+            </button>
+        </div>
+
+        <hr>
+
+        <!-- блок с диаграммой и списком -->
+        <div class="progress-content">
+
+            <!-- диаграмма -->
+            <div class="diagram">
+                <canvas id="chartProgress" width="400" height="200"></canvas>
+            </div>
+
+            <!-- список посещённых стран -->
+            <div class="countries">
+                <div class="countries-title">Посещенные страны</div>
+                <div id="divMyCountries" class="my-countries-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Передача данных в JS -->
     <script type="text/javascript">
         var ListMyCountries = {{ ListMyCountries|safe }};
         var ListCountries = {{ ListCountries|safe }};

@@ -1,4 +1,4 @@
-// СКРИПТЫ ГЛАВНОЙ СТРАНИЦЫ
+// СКРИПТЫ НАЧАЛЬНОЙ СТРАНИЦЫ
 var Select = 1; // что выбрали, 1 - авторизация, 2 - регистрация
 
 // событие при окончании загрузки страницы
@@ -25,6 +25,7 @@ function select_reg(){
 // нажата кнопка перехода на карту
 function go_map(){
     var name = '';
+    // Если выбрана регистрация проверяем никнейм
     if(Select == 2){
         name = document.getElementById('name').value;
         if(name.length < 3){
@@ -42,6 +43,7 @@ function go_map(){
         alert('Пароль должен состоять минимум из 5 символов.');
         return;
     }
+    // Добавляем выбор пользователя в форму перед отправкой
     document.querySelector('input[name="select"]').value = Select;
     document.getElementById('authForm').submit();
 }
