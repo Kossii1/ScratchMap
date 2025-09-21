@@ -7,6 +7,7 @@ from program.structs import Country
 from datetime import date
 import os
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()  # Загружает переменные из .env файла
 
@@ -98,6 +99,27 @@ class Service:
             # подключение к базе данных
             conn = Service.get_connection()
             cursor = conn.cursor()
+
+            # Проверяем, есть ли данные в таблице
+            cursor.execute('SELECT COUNT(*) FROM countries')
+            count = cursor.fetchone()[0]
+
+            if count == 0:
+                # Если таблица пустая — загружаем через REST Countries
+                url = "https://restcountries.com/v3.1/all?fields=name,cca2,translations"
+                response = requests.get(url)
+                if response.status_code == 200:
+                    countries_data = response.json()
+                    for country in countries_data:
+                        name_ru = country.get('translations', {}).get('rus', {}).get('common') \
+                                  or country['name']['common']
+                        short_name = country.get('cca2', '')
+                        if short_name:
+                            cursor.execute(
+                                'INSERT INTO countries (name, short_name) VALUES (%s, %s)',
+                                (name_ru, short_name)
+                            )
+                    conn.commit()
 
             # выбираем id, имя и короткое имя всех стран, сортируем по имени
             cursor.execute('SELECT id,name,short_name FROM countries ORDER BY name')
